@@ -1,5 +1,13 @@
 image: node
-construir site:
+
+stages:
+  - build
+  - test
+  - deploy
+  
+build site:
+  stage: build
+
   script:
     - cd website
     - npm install
