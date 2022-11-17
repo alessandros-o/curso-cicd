@@ -4,9 +4,12 @@ stages:
   - build
   - test
   - deploy
-  
+
 build site:
   stage: build
+  artifacts:
+    paths:
+      - ./website/build/aulaci
 
   script:
     - cd website
