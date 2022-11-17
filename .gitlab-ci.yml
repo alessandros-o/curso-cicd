@@ -9,7 +9,7 @@ build site:
   stage: build
   artifacts:
     paths:
-      - ./website/build/aulaci
+      - ./website/build/gitlabci
 
   script:
     - cd website
