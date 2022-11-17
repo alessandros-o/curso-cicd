@@ -27,4 +27,4 @@ deploy website:
   stage: deploy
   script:
     - npm install -g surge
-    - surge --project ./website/build --domain testsite-ao.surge.sh
+    - surge --project ./website/build/test-site --domain testsite-ao.surge.sh
