@@ -9,6 +9,10 @@ cache:
   paths:
     - ./website/build
 
+before_script:
+  - whoami
+  - pwd
+
 build site:
   stage: build
   artifacts:
@@ -25,6 +29,12 @@ build site:
 
 deploy website:
   stage: deploy
-  script:
+  before_script:
     - npm install -g surge
+  script:
     - surge --project ./website/build/test-site --domain testsite-aos.surge.sh
+  after_script:
+    - whoami
+  environment:
+    name: staging
+    url: http://testsite-aos.surge.sh
