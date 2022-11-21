@@ -19,7 +19,7 @@ test site:
     - npm install -g broken-link-checker@^0.7.8 wait-on@^6.0.1
   script:
     - cd website
-    - npm install && npm run start &
+    - npm install --verbose && npm run start --verbose &
     - wait-on http://localhost:3000/ --timeout 30000
     - blc --recursive --exclude-external http://localhost:3000
 
