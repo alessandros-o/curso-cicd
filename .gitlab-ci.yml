@@ -16,7 +16,7 @@ before_script:
 test site:
   stage: test
   before_script:
-    - npm install -g broken-link-checker@^0.7.8 wait-on@^2.1.0
+    - npm install -g broken-link-checker@^0.7.8 wait-on@^6.0.1
   script:
     - cd website
     - npm install && npm run start &
