@@ -46,9 +46,9 @@ deploy website:
   before_script:
     - npm install -g surge
   script:
-    - surge --project ./website/build/test-site --domain testsite-aos.surge.sh
+    - surge --project ./website/build/test-site --domain testsite-aosl.surge.sh
   after_script:
     - whoami
   environment:
     name: staging
-    url: http://testsite-aos.surge.sh
+    url: http://testsite-aosl.surge.sh
