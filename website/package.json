@@ -10,7 +10,6 @@
     "scan": "snyk test"
   },
   "devDependencies": {
-    "docusaurus": "^1.14.7",
-    "snyk": "^7.0.0"
+    "docusaurus": "^1.14.7"
   }
 }
