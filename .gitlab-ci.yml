@@ -66,7 +66,7 @@ deploy to staging:
 deploy to production:
   stage: deploy
   variables:
-    CNAME: testsite-aosl.surge.sh
+    CNAME: aosl.surge.sh
     GIT_STRATEGY: none
   cache:
     key: site-package
@@ -78,7 +78,7 @@ deploy to production:
   after_script:
     - whoami
   environment:
-    name: staging
+    name: production
     url: http://${CNAME}
   only:
     - main
