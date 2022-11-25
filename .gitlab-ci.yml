@@ -43,17 +43,42 @@ package site:
     - npm install
     - npm run build
 
-deploy website:
+deploy to staging:
   stage: deploy
+  variables:
+    CNAME: staging-aosl.surge.sh
+    GIT_STRATEGY: none
   cache:
     key: site-package
     policy: pull
   before_script:
     - npm install -g surge
   script:
-    - surge --project ./website/build/test-site --domain testsite-aosl.surge.sh
+    - surge --project ./website/build/test-site --domain ${CNAME}
   after_script:
     - whoami
   environment:
     name: staging
-    url: http://testsite-aosl.surge.sh
+    url: http://${CNAME}
+  only:
+    - master
+
+deploy to production:
+  stage: deploy
+  variables:
+    CNAME: testsite-aosl.surge.sh
+    GIT_STRATEGY: none
+  cache:
+    key: site-package
+    policy: pull
+  before_script:
+    - npm install -g surge
+  script:
+    - surge --project ./website/build/test-site --domain ${CNAME}
+  after_script:
+    - whoami
+  environment:
+    name: staging
+    url: http://${CNAME}
+  only:
+    - main
