@@ -1,0 +1,84 @@
+image: node
+
+stages:
+  - test
+  - package
+  - deploy
+
+before_script:
+  - whoami
+  - pwd
+
+test site:
+  stage: test
+  before_script:
+    - npm install -g broken-link-checker@^0.7.8 wait-on@^6.0.1
+  script:
+    - cd website
+    - npm install && npm run start &
+    - wait-on http://localhost:3000/ --timeout 300000
+    - blc --recursive --exclude-external http://localhost:3000
+
+vulnerabilities check:
+  stage: test
+  script:
+    - cd website && npm install -g snyk && npm run scan
+
+package site:
+  stage: package
+  cache:
+    key: site-package
+    policy: push
+    paths:
+      - ./website/build
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    when: always
+    expire_in: 1h20min
+    paths:
+      - ./website/build/test-site
+
+  script:
+    - cd website
+    - npm install
+    - npm run build
+
+deploy to staging:
+  stage: deploy
+  variables:
+    CNAME: staging-aosl.surge.sh
+    GIT_STRATEGY: none
+  cache:
+    key: site-package
+    policy: pull
+  before_script:
+    - npm install -g surge
+  script:
+    - surge --project ./website/build/test-site --domain ${CNAME}
+  after_script:
+    - whoami
+  environment:
+    name: staging
+    url: http://${CNAME}
+  only:
+    - master
+
+deploy to production:
+  stage: deploy
+  variables:
+    CNAME: testsite-aosl.surge.sh
+    GIT_STRATEGY: none
+  cache:
+    key: site-package
+    policy: pull
+  before_script:
+    - npm install -g surge
+  script:
+    - surge --project ./website/build/test-site --domain ${CNAME}
+  after_script:
+    - whoami
+  environment:
+    name: staging
+    url: http://${CNAME}
+  only:
+    - main
