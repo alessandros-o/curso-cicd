@@ -52,7 +52,7 @@ deploy to staging:
     key: site-package
     policy: pull
   before_script:
-    - npm install -g surge npm@latest
+    - npm install -g surge
   script:
     - surge --project ./website/build/test-site --domain ${CNAME}
   after_script:
@@ -72,7 +72,7 @@ deploy to production:
     key: site-package
     policy: pull
   before_script:
-    - npm install -g surge npm@latest
+    - npm install -g surge
   script:
     - surge --project ./website/build/test-site --domain ${CNAME}
   after_script:
