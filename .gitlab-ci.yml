@@ -40,13 +40,13 @@ package site:
 
   script:
     - cd website
-    - npm install
+    - npm install npm@latest
     - npm run build
 
 deploy to staging:
   stage: deploy
   variables:
-    CNAME: staging-aosl.surge.sh
+    CNAME: staging-aos.surge.sh
     GIT_STRATEGY: none
   cache:
     key: site-package
@@ -66,7 +66,7 @@ deploy to staging:
 deploy to production:
   stage: deploy
   variables:
-    CNAME: aosl.surge.sh
+    CNAME: aos-production.surge.sh
     GIT_STRATEGY: none
   cache:
     key: site-package
