@@ -40,7 +40,7 @@ package site:
 
   script:
     - cd website
-    - npm install
+    - npm install npm@latest
     - npm run build
 
 deploy to staging:
