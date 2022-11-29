@@ -34,7 +34,7 @@ package site:
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
     when: always
-    expire_in: 1h20min
+    expire_in: 3h20min
     paths:
       - ./website/build/test-site
 
@@ -46,7 +46,7 @@ package site:
 deploy to staging:
   stage: deploy
   variables:
-    CNAME: stagings-aos.surge.sh
+    CNAME: stagings-aosl.surge.sh
     GIT_STRATEGY: none
   cache:
     key: site-package
@@ -63,10 +63,46 @@ deploy to staging:
   only:
     - master
 
+deploy to release:
+  stage: deploy
+  variables:
+    CNAME: $CI_COMMIT_REF_SLUG.aosl.surge.sh
+    GIT_STRATEGY: none
+  cache:
+    key: site-package
+    policy: pull
+  before_script:
+    - npm install -g surge
+  script:
+    - surge --project ./website/build/test-site --domain ${CNAME}
+  environment:
+    name: review/$CI_COMMIT_REF_SLUG
+    url: http://${CNAME}
+    on_stop: turnoff
+  only:
+    - /^release-.*$/
+
+turnoff:
+  stage: deploy
+  variables:
+    CNAME: $CI_COMMIT_REF_SLUG.aosl.surge.sh
+    GIT_STRATEGY: none
+  before_script:
+    - npm install -g surge
+  script:
+    - surge teardown ${CNAME}
+  when: manual
+  environment:
+    name: review/$CI_COMMIT_REF_SLUG
+    url: http://${CNAME}
+    action: stop
+  only:
+    - /^release-.*$/
+
 deploy to production:
   stage: deploy
   variables:
-    CNAME: stagings-aos.surge.sh
+    CNAME: stagings-aosl.surge.sh
     GIT_STRATEGY: none
   cache:
     key: site-package
