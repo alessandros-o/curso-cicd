@@ -78,9 +78,9 @@ deploy to release:
   environment:
     name: review/$CI_COMMIT_REF_SLUG
     url: http://${CNAME}
+    on_stop: turnoff
   only:
     - /^release-.*$/
-  on_stop: turnoff
 
 turnoff:
   stage: deploy
