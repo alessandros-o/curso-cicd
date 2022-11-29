@@ -1,4 +1,4 @@
-image: node
+image: node:19.1.0
 
 stages:
   - test
@@ -62,42 +62,6 @@ deploy to staging:
     url: http://${CNAME}
   only:
     - master
-
-deploy to release:
-  stage: deploy
-  variables:
-    CNAME: $CI_COMMIT_REF_SLUG.aos.surge.sh
-    GIT_STRATEGY: none
-  cache:
-    key: site-package
-    policy: pull
-  before_script:
-    - npm install -g surge
-  script:
-    - surge --project ./website/build/test-site --domain ${CNAME}
-  environment:
-    name: review/$CI_COMMIT_REF_SLUG
-    url: http://${CNAME}
-    on_stop: turnoff
-  only:
-    - /^release-.*$/
-
-turnoff:
-  stage: deploy
-  variables:
-    CNAME: $CI_COMMIT_REF_SLUG.aos.surge.sh
-    GIT_STRATEGY: none
-  before_script:
-    - npm install -g surge
-  script:
-    - surge teardown ${CNAME}
-  when: manual
-  environment:
-    name: review/$CI_COMMIT_REF_SLUG
-    url: http://${CNAME}
-    action: stop
-  only:
-    - /^release-.*$/
 
 deploy to production:
   stage: deploy
