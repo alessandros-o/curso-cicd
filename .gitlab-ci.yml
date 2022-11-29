@@ -1,4 +1,4 @@
-image: node
+image: node:19.1.0
 
 stages:
   - test
@@ -46,7 +46,7 @@ package site:
 deploy to staging:
   stage: deploy
   variables:
-    CNAME: staging-aos.surge.sh
+    CNAME: stagings-aos.surge.sh
     GIT_STRATEGY: none
   cache:
     key: site-package
@@ -66,7 +66,7 @@ deploy to staging:
 deploy to production:
   stage: deploy
   variables:
-    CNAME: staging-aos.surge.sh
+    CNAME: stagings-aos.surge.sh
     GIT_STRATEGY: none
   cache:
     key: site-package
